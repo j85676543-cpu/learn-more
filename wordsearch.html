@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Overlay+ — Wordsearch</title>
+
+
+    <style>
+        body {
+
+            margin: 0;
+
+            background: #0b0a12;
+
+            color: #e8e6ef;
+
+            font-family: Segoe UI, Arial, sans-serif;
+
+        }
+
+
+
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 20px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 180px;
+
+        }
+
+
+
+        .sidebar a {
+
+            display: block;
+
+            padding: 11px;
+
+            margin-bottom: 10px;
+
+            text-align: center;
+
+            background: #171322;
+
+            color: #d8d4e8;
+
+            text-decoration: none;
+
+            border-radius: 20px;
+
+            transition: .2s;
+
+        }
+
+
+
+        .sidebar a:hover {
+
+            background: #261d3d;
+
+        }
+
+
+
+        .sidebar .active {
+
+            background: #8b5cf6;
+
+            color: white;
+
+        }
+
+
+
+
+
+        .container {
+
+            max-width: 900px;
+
+            margin-left: 240px;
+
+            padding: 30px;
+
+        }
+
+
+
+
+
+        .card {
+
+            background: #14111f;
+
+            border: 1px solid #28213d;
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+
+        h1 {
+
+            color: #a78bfa;
+
+            margin-top: 0;
+
+        }
+
+
+
+        h2 {
+
+            color: #a78bfa;
+
+        }
+
+
+
+        p {
+
+            line-height: 1.6;
+
+        }
+
+
+
+        .muted {
+
+            color: #8b85a5;
+
+            font-size: 14px;
+
+        }
+
+
+
+
+
+        .search-form {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 15px;
+
+        }
+
+
+
+
+
+        .search-input {
+
+            flex: 1;
+
+            min-width: 250px;
+
+            padding: 10px 14px;
+
+            border-radius: 20px;
+
+            border: 1px solid #332850;
+
+            background: #1b162b;
+
+            color: white;
+
+            outline: none;
+
+        }
+
+
+
+
+        .search-input:focus {
+
+            border-color: #8b5cf6;
+
+        }
+
+
+
+
+
+        .search-button {
+
+            border: none;
+
+            padding: 10px 18px;
+
+            border-radius: 20px;
+
+            background: #8b5cf6;
+
+            color: white;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .search-button:hover {
+
+            background: #7c3aed;
+
+        }
+
+
+
+
+
+        .suggestions {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 15px;
+
+        }
+
+
+        .suggestion-chip {
+
+            background: #211a35;
+
+            border: 1px solid #3b2c5c;
+
+            color: #ddd6fe;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+
+        }
+
+        .help-card {
+
+            margin-top: 18px;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            background: #171322;
+
+            border: 1px solid #28213d;
+
+        }
+
+
+
+        .help-title {
+
+            color: #ddd6fe;
+
+            font-weight: 600;
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .help-list {
+
+            display: grid;
+
+            gap: 8px;
+
+        }
+
+
+
+        .help-item {
+
+            background: #1b162b;
+
+            padding: 10px;
+
+            border-radius: 8px;
+
+            color: #d8d4e8;
+
+        }
+
+
+
+        .help-code {
+
+            color: #c084fc;
+
+            font-weight: bold;
+
+        }
+
+
+
+        .footer {
+
+            text-align: center;
+
+            color: #8b85a5;
+
+            margin-top: 30px;
+
+        }
+
+
+
+
+
+        @media(max-width:800px) {
+
+
+            .sidebar {
+
+                position: static;
+
+                transform: none;
+
+                width: auto;
+
+                padding: 20px;
+
+            }
+
+
+
+            .container {
+
+                margin-left: 0;
+
+            }
+
+
+
+        }
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+    <div class="sidebar">
+
+
+        <a href="welcome.html">
+            Panel
+        </a>
+
+
+
+        <a href="todos.html">
+            To-Dos
+        </a>
+
+
+
+        <a href="wordsearch.html" class="active">
+            Wordsearch
+        </a>
+
+
+    </div>
+
+
+
+
+
+    <div class="container">
+
+
+
+
+
+        <div class="card">
+
+
+            <h1>
+                Wordsearch
+            </h1>
+
+
+
+            <p class="muted">
+                Type a letter and press Enter to get matching word suggestions.
+            </p>
+
+
+
+
+
+            <form class="search-form" id="wordSearchForm">
+
+
+                <input id="wordInput" class="search-input" type="text" placeholder="Example: dog, cat, ^a, b$..."
+                    autocomplete="off">
+
+
+                <button class="search-button" type="submit">
+
+                    Suggest
+
+                </button>
+
+
+            </form>
+
+
+
+
+
+            <div id="suggestions" class="suggestions" aria-live="polite"></div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="card">
+
+
+            <h2>
+                Regex examples
+            </h2>
+
+
+
+            <div class="help-list">
+
+
+                <div class="help-item">
+
+                    <span class="help-code">
+                        ^a
+                    </span>
+
+                    — only words that start with a
+
+                </div>
+
+
+
+
+                <div class="help-item">
+
+                    <span class="help-code">
+                        b$
+                    </span>
+
+                    — only words that end with b
+
+                </div>
+
+
+
+
+                <div class="help-item">
+
+                    <span class="help-code">
+                        -longs
+                    </span>
+
+                    — words with 20 or more letters
+
+                </div>
+
+
+
+
+                <div class="help-item">
+
+                    <span class="help-code">
+                        -shorts
+                    </span>
+
+                    — words with 5 letters or less
+
+                </div>
+
+
+
+
+                <div class="help-item">
+
+                    <span class="help-code">
+                        ^a.*e$
+                    </span>
+
+                    — words that start with a and end with e
+
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="footer">
+
+
+            <p>
+                Overlay+ — Wordsearch
+            </p>
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+    <script src="wordsearch.js"></script>
+
+
+</body>
+
+
+</html>
